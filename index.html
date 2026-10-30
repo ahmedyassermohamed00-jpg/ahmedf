@@ -495,7 +495,7 @@
             
             <!-- Logo & Brand -->
             <div class="flex items-center space-x-3 space-x-reverse">
-                <a href="#" class="flex items-center space-x-1.5 space-x-reverse px-2 py-1 rounded border border-transparent hover:border-white transition">
+                <a href="#" class="souq-brand-name flex items-center space-x-1.5 space-x-reverse px-2 py-1 rounded border border-transparent hover:border-white transition">
                     <span class="text-2xl font-black tracking-tight text-white flex items-center">
                         <span class="text-orange-400">Souq</span>Elite
                         <span class="text-[10px] mr-1 px-1.5 py-0.5 bg-orange-500 text-black font-black rounded">PRO</span>
@@ -503,7 +503,7 @@
                 </a>
 
                 <!-- Delivery Location Button -->
-                <button data-onclick="openLocationModal()" class="hidden md:flex items-center text-xs px-2 py-1 rounded border border-transparent hover:border-white transition text-right">
+                <button data-onclick="openLocationModal()" class="souq-location-control flex items-center text-xs px-2 py-1 rounded border border-transparent hover:border-white transition text-right" aria-label="تحديد موقع التوصيل">
                     <i class="fa-solid fa-location-dot text-orange-400 text-base ml-1.5"></i>
                     <div>
                         <p class="text-gray-400 text-[10px]">التوصيل إلى</p>
@@ -554,13 +554,13 @@
                 </button>
 
                 <!-- Wishlist Drawer Trigger -->
-                <button data-onclick="openWishlistDrawer()" class="relative p-2 border border-transparent hover:border-white rounded transition">
+                <button data-onclick="openWishlistDrawer()" class="souq-wishlist-control relative p-2 border border-transparent hover:border-white rounded transition">
                     <i class="fa-regular fa-heart text-xl text-orange-400"></i>
                     <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center">0</span>
                 </button>
 
                 <!-- Cart Drawer Trigger -->
-                <button data-onclick="toggleCartDrawer(true)" class="flex items-center px-2 py-1 border border-transparent hover:border-white rounded transition relative">
+                <button data-onclick="toggleCartDrawer(true)" class="souq-cart-control flex items-center px-2 py-1 border border-transparent hover:border-white rounded transition relative">
                     <div class="relative">
                         <i class="fa-solid fa-cart-shopping text-2xl text-orange-400"></i>
                         <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-orange-500 text-amazon-dark text-xs font-black rounded-full w-5 h-5 flex items-center justify-center border-2 border-amazon-dark">0</span>
@@ -3097,6 +3097,399 @@
         window.refreshHeader();
         document.addEventListener('DOMContentLoaded', () => window.refreshHeader(), { once: true });
     }
+})();
+</script>
+
+<style id="souq-mobile-dark-refinement">
+
+/* =========================================================
+   SouqElite mobile fit, delivery visibility and dark palette
+   ========================================================= */
+.souq-location-control {
+    flex: 0 1 auto;
+    min-width: 0;
+    gap: 5px;
+    border: 1px solid rgba(96,165,250,.28) !important;
+    background: linear-gradient(135deg,rgba(59,130,246,.10),rgba(139,92,246,.08));
+}
+.souq-location-control .fa-location-dot { color:#60a5fa !important; }
+.souq-location-control #current-location-text {
+    display:block; max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+@media (max-width: 767px) {
+    header > .max-w-7xl {
+        padding:6px 9px !important;
+        gap:7px !important;
+        align-items:center !important;
+    }
+    /* Keep logo and delivery picker together on the first compact row. */
+    nav button[data-onclick="openLocationModal()"] { display:none !important; }
+    header > .max-w-7xl > div:nth-child(1) {
+        order:1 !important;
+        flex:1 1 100% !important;
+        width:100%; min-width:0;
+        display:flex !important;
+        justify-content:space-between !important;
+        align-items:center !important;
+        gap:6px !important;
+    }
+    header > .max-w-7xl > div:nth-child(1) > a { padding:2px 0 !important; min-width:0; }
+    header .souq-brand-name .text-2xl { font-size:18px !important; }
+    header .souq-location-control {
+        display:flex !important;
+        max-width:148px;
+        min-width:0;
+        padding:4px 6px !important;
+        margin:0 !important;
+        border-radius:9px !important;
+    }
+    header .souq-location-control .fa-location-dot {
+        font-size:14px !important;
+        margin-left:3px !important;
+        flex:0 0 auto;
+    }
+    header .souq-location-control p:first-child { font-size:9px !important; line-height:1.3 !important; }
+    header .souq-location-control #current-location-text {
+        max-width:105px; font-size:10px !important; line-height:1.35 !important;
+    }
+    /* Utilities get their own neat row instead of squeezing the delivery control. */
+    header > .max-w-7xl > div:nth-child(3) {
+        display:flex !important;
+        order:2 !important;
+        flex:1 1 100% !important;
+        width:100%; min-width:0;
+        margin:0 !important;
+        justify-content:space-between !important;
+        align-items:center !important;
+        gap:3px !important;
+    }
+    header > .max-w-7xl > div:nth-child(3) > * { order:initial !important; }
+    header > .max-w-7xl > div:nth-child(3) button { padding:5px 6px !important; }
+    header > .max-w-7xl > div:nth-child(2) {
+        order:3 !important;
+        flex:1 1 100% !important;
+        width:100% !important;
+        min-width:0;
+        max-width:none !important;
+    }
+    header #currency-select { width:61px; font-size:10px !important; }
+    header [data-onclick="openAccountModal()"] { padding-inline:5px !important; }
+    header .souq-cart-control .fa-cart-shopping { font-size:19px !important; }
+    header .souq-wishlist-control .fa-heart { font-size:17px !important; }
+
+    main {
+        padding:13px 10px 22px !important;
+        gap:18px !important;
+    }
+    main.space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top:18px !important; }
+    main h2 { font-size:1.12rem !important; }
+    main > section:first-child { height:292px !important; min-height:292px !important; }
+    .catrow { gap:8px !important; padding-bottom:5px !important; }
+    .catrow > .catcard { flex:0 0 118px !important; min-width:118px !important; border-radius:12px !important; }
+    .catcard .lbl { padding:15px 8px 7px !important; font-size:11px !important; }
+
+    #products-grid {
+        grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+        gap:8px !important;
+        padding:4px 2px 10px !important;
+    }
+    #products-grid > div {
+        padding:8px !important;
+        border-radius:12px !important;
+        min-width:0 !important;
+    }
+    #products-grid > div .h-44 {
+        height:96px !important;
+        margin-bottom:7px !important;
+        padding:5px !important;
+        border-radius:9px !important;
+    }
+    #products-grid > div .h-44 img { max-height:100% !important; }
+    #products-grid > div > div:first-child > .mb-2 { margin-bottom:6px !important; gap:3px !important; }
+    #products-grid > div > div:first-child > .mb-2 span { font-size:9px !important; padding:2px 5px !important; }
+    #products-grid h3 {
+        font-size:11.5px !important;
+        line-height:1.45 !important;
+        min-height:32px !important;
+        margin-bottom:6px !important;
+        overflow-wrap:anywhere;
+    }
+    #products-grid .text-lg { font-size:13px !important; }
+    #products-grid .text-xs { font-size:10.5px !important; }
+    #products-grid .text-\[10px\], #products-grid .text-\[11px\] { font-size:9.5px !important; }
+    #products-grid .space-y-3 { row-gap:7px !important; }
+    #products-grid .grid.grid-cols-2 { gap:5px !important; }
+    #products-grid button {
+        min-height:34px !important;
+        padding:6px 3px !important;
+        font-size:10px !important;
+        line-height:1.35 !important;
+        border-radius:8px !important;
+    }
+    #products-grid button.absolute { width:27px !important; height:27px !important; min-height:27px !important; top:7px !important; }
+    .products-scroll-box { max-height:67vh !important; padding:5px !important; border-radius:12px !important; }
+    .products-scroll-box #products-load-more button { min-height:32px !important; font-size:12px !important; }
+
+    #hero-slider-container { min-height:250px !important; }
+    main section.relative.rounded-2xl { border-radius:14px !important; }
+    #delivery-map { height:42vh !important; min-height:230px !important; }
+    #generic-info-modal { padding:7px !important; }
+    #generic-info-modal > div { padding:13px !important; border-radius:16px !important; }
+    #info-modal-body:has(#delivery-map) { max-height:75vh !important; overflow-y:auto !important; }
+    .delivery-mode-card { padding:10px !important; gap:9px !important; font-size:12px !important; }
+    .delivery-mode-card .mode-icon { flex-basis:35px !important; height:35px !important; }
+}
+@media (max-width:390px) {
+    header .souq-location-control { max-width:132px; }
+    header .souq-location-control #current-location-text { max-width:88px; }
+    #products-grid { gap:6px !important; }
+    #products-grid > div { padding:7px !important; }
+    #products-grid > div .h-44 { height:86px !important; }
+    #products-grid h3 { font-size:10.8px !important; }
+    #products-grid button { font-size:9.5px !important; }
+}
+
+/* Restore the original SouqElite colorful accents and a rich slate/orange dark theme. */
+.dark body {
+    background:#0b1220 !important;
+    color:#e5e7eb !important;
+}
+.dark main { color:#e5e7eb; }
+.dark .bg-white { background-color:#1e293b !important; }
+.dark .bg-gray-50 { background-color:#111827 !important; }
+.dark .bg-gray-100 { background-color:#273449 !important; }
+.dark .bg-gray-200 { background-color:#334155 !important; }
+.dark .text-gray-900, .dark .text-gray-800 { color:#f8fafc !important; }
+.dark .text-gray-700, .dark .text-gray-600 { color:#cbd5e1 !important; }
+.dark .text-gray-500 { color:#94a3b8 !important; }
+.dark .text-gray-400 { color:#9ca3af !important; }
+.dark .border-gray-200, .dark .border-gray-300 { border-color:#475569 !important; }
+.dark input:not([type="checkbox"]):not([type="radio"]),
+.dark select, .dark textarea {
+    color:#f8fafc;
+    border-color:#475569;
+}
+.dark .products-scroll-box {
+    background:#111827 !important;
+    border-color:#334155 !important;
+}
+.dark .products-scroll-box #products-load-more { background:transparent !important; }
+.dark #products-grid > div {
+    background:#1e293b !important;
+    border-color:#475569 !important;
+    color:#f1f5f9;
+}
+.dark #products-grid > div .h-44 { background:#0f172a !important; }
+.dark #all-categories-nav-btn {
+    color:#111827 !important;
+    background:linear-gradient(115deg,#fbbf24 0%,#f97316 55%,#ea580c 100%) !important;
+    border-color:rgba(255,255,255,.2) !important;
+    box-shadow:0 4px 14px rgba(249,115,22,.28) !important;
+}
+.dark #all-categories-nav-btn i { color:#111827 !important; }
+.dark .souq-brand-name { color:#fff !important; }
+.dark .souq-brand-name > span:first-child { color:#fb923c !important; }
+.dark .souq-brand-name .souq-brand-pro { background:#f97316 !important; color:#111827 !important; }
+.dark .souq-location-control {
+    background:linear-gradient(135deg,rgba(245,158,11,.16),rgba(249,115,22,.08)) !important;
+    border-color:rgba(251,146,60,.4) !important;
+}
+.dark .souq-location-control .fa-location-dot { color:#fb923c !important; }
+.dark .souq-location-control #current-location-text { color:#fff !important; }
+.dark .souq-cart-control .fa-cart-shopping { color:#fb923c !important; }
+.dark .souq-cart-control #cart-count-badge { background:#f97316 !important; color:#111827 !important; }
+.dark .souq-wishlist-control .fa-heart { color:#fb7185 !important; }
+.dark .souq-wishlist-control #wishlist-badge { background:#ec4899 !important; color:#fff !important; }
+.dark #cart-drawer h3 .fa-cart-shopping { color:#fb923c !important; }
+.dark #quickview-modal.product-page-mode {
+    background:#0b1220 !important;
+}
+.dark #quickview-modal.product-page-mode > div {
+    background:#111827 !important;
+    color:#f8fafc !important;
+}
+.dark #quickview-modal.product-page-mode > div > div:first-of-type {
+    background:#0f172a !important;
+    border-bottom:1px solid #334155 !important;
+}
+.dark #quickview-modal.product-page-mode > div > div:nth-of-type(2) { color:#f8fafc !important; }
+.dark #quickview-modal.product-page-mode #qv-title { color:#f8fafc !important; }
+.dark #quickview-modal.product-page-mode #qv-price { color:#fb923c !important; }
+.dark #quickview-modal.product-page-mode #qv-description-card,
+.dark #quickview-modal.product-page-mode #qv-seller-card,
+.dark #quickview-modal.product-page-mode #qv-buyers-reviews {
+    background:#1e293b !important;
+    border-color:#475569 !important;
+}
+.dark #quickview-modal.product-page-mode #qv-description-card h3,
+.dark #quickview-modal.product-page-mode #qv-seller-card h3,
+.dark #quickview-modal.product-page-mode #qv-buyers-reviews h3 { color:#f8fafc !important; }
+.dark #quickview-modal.product-page-mode #qv-desc { color:#cbd5e1 !important; }
+.dark #quickview-modal.product-page-mode #qv-seller-card .seller-info-item,
+.dark #quickview-modal.product-page-mode #qv-buyers-reviews #qv-reviews-list { background:#0f172a !important; }
+.dark #quickview-modal.product-page-mode #qv-seller-card .seller-info-value { color:#f8fafc !important; }
+.dark #quickview-modal.product-page-mode .review-toggle-btn {
+    background:linear-gradient(110deg,#f59e0b,#ea580c) !important;
+    border-color:#f97316 !important;
+    color:#111827 !important;
+}
+.dark #info-modal-body .delivery-mode-card {
+    background:linear-gradient(135deg,#1e293b,#111827) !important;
+    border-color:#475569 !important;
+    color:#f8fafc !important;
+}
+.dark .delivery-status { background:#172554 !important; color:#bfdbfe !important; }
+.dark .delivery-primary-btn { background:linear-gradient(110deg,#f59e0b,#ea580c) !important; color:#111827 !important; }
+.dark .delivery-secondary-btn { background:#1f2937 !important; border-color:#475569 !important; color:#e5e7eb !important; }
+.dark .delivery-location-field { background:#0f172a !important; border-color:#475569 !important; color:#f8fafc !important; }
+.dark .checkout-shell, .dark #generic-info-modal > div,
+.dark #seller-modal > div, .dark #account-modal > div {
+    background:#1e293b !important;
+    color:#f8fafc !important;
+    border-color:#475569 !important;
+}
+.dark .checkout-input { background:#0f172a !important; color:#f8fafc !important; border-color:#475569 !important; }
+.dark .checkout-progress-track { background:#334155 !important; }
+.dark .checkout-progress-track span { background:linear-gradient(90deg,#f59e0b,#10b981) !important; }
+.dark .checkout-progress-step.active { color:#fb923c !important; }
+.dark .checkout-progress-step.active .step-circle { background:#f97316 !important; color:#111827 !important; }
+
+</style>
+
+<script id="souq-mobile-history-theme-fix">
+(function () {
+    'use strict';
+
+    // Remember the selected theme and restore it when the page is reopened.
+    const savedTheme = (() => { try { return localStorage.getItem('souqelite_theme'); } catch (_) { return null; } })();
+    if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        const icon = document.getElementById('theme-icon');
+        if (icon) icon.className = 'fa-solid fa-sun text-yellow-300';
+    } else if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+    }
+    const originalToggleTheme = window.toggleTheme;
+    if (typeof originalToggleTheme === 'function' && !window.__souqThemePersistenceReady) {
+        window.toggleTheme = function () {
+            originalToggleTheme();
+            try { localStorage.setItem('souqelite_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light'); } catch (_) {}
+        };
+        window.__souqThemePersistenceReady = true;
+    }
+
+    // Browser Back should close overlays / step back through checkout rather than leave the site.
+    const originalToggleCart = window.toggleCartDrawer;
+    const originalStartCheckout = window.startCheckoutWorkflow;
+    const originalGoCheckoutStep = window.goToCheckoutStep;
+    const originalCloseCheckout = window.closeCheckoutModal;
+    if (typeof originalToggleCart !== 'function' || typeof originalStartCheckout !== 'function' || typeof originalGoCheckoutStep !== 'function') return;
+
+    let checkoutHistoryDepth = 0;
+    let handlingPopState = false;
+    let transitionInProgress = false;
+    const overlayFromState = (state) => state && state.souqEliteOverlay ? state.souqEliteOverlay : null;
+    const currentOverlay = () => overlayFromState(history.state);
+
+    function pushOverlay(type, step) {
+        const oldState = (history.state && typeof history.state === 'object') ? history.state : {};
+        const next = { ...oldState, souqEliteOverlay: { type, step: step || null, stamp: Date.now() } };
+        history.pushState(next, '', window.location.pathname + window.location.search + window.location.hash);
+    }
+
+    function checkoutVisible() {
+        const modal = document.getElementById('checkout-modal');
+        return !!modal && !modal.classList.contains('hidden');
+    }
+
+    function showCheckoutStepFromHistory(step) {
+        const drawer = document.getElementById('cart-drawer');
+        if (drawer) originalToggleCart(false);
+        const modal = document.getElementById('checkout-modal');
+        if (modal) modal.classList.remove('hidden');
+        handlingPopState = true;
+        originalGoCheckoutStep(Math.min(3, Math.max(1, Number(step) || 1)));
+        handlingPopState = false;
+    }
+
+    window.toggleCartDrawer = function (open) {
+        const before = currentOverlay();
+        if (open) {
+            originalToggleCart(true);
+            const cartDrawer = document.getElementById('cart-drawer');
+            if (cartDrawer) setTimeout(() => { if (!cartDrawer.classList.contains('opacity-0')) cartDrawer.classList.remove('pointer-events-none'); }, 340);
+            if (!handlingPopState && !transitionInProgress && !(before && before.type === 'cart')) {
+                pushOverlay('cart');
+            }
+            return;
+        }
+        originalToggleCart(false);
+        if (!handlingPopState && !transitionInProgress && before && before.type === 'cart') {
+            history.back();
+        }
+    };
+
+    window.startCheckoutWorkflow = function () {
+        if (typeof cart === 'undefined' || !Array.isArray(cart) || cart.length === 0) {
+            return originalStartCheckout();
+        }
+        // Keep the cart entry underneath checkout so Back from checkout returns to the cart.
+        const before = currentOverlay();
+        if (!(before && before.type === 'cart')) pushOverlay('cart');
+        transitionInProgress = true;
+        try { originalStartCheckout(); }
+        finally { transitionInProgress = false; }
+        if (checkoutVisible()) {
+            pushOverlay('checkout', 1);
+            checkoutHistoryDepth = 1;
+        }
+    };
+
+    window.goToCheckoutStep = function (step) {
+        originalGoCheckoutStep(step);
+        if (handlingPopState || !checkoutVisible()) return;
+        const stateOverlay = currentOverlay();
+        if (stateOverlay && stateOverlay.type === 'checkout' && Number(stateOverlay.step) === Number(step)) return;
+        if (stateOverlay && stateOverlay.type === 'checkout') {
+            pushOverlay('checkout', step);
+            checkoutHistoryDepth += 1;
+        }
+    };
+
+    if (typeof originalCloseCheckout === 'function') {
+        window.closeCheckoutModal = function () {
+            const active = currentOverlay();
+            if (active && active.type === 'checkout' && checkoutHistoryDepth > 0) {
+                history.go(-checkoutHistoryDepth);
+                return;
+            }
+            originalCloseCheckout();
+        };
+    }
+
+    window.addEventListener('popstate', function (event) {
+        const overlay = overlayFromState(event.state);
+        handlingPopState = true;
+        try {
+            if (overlay && overlay.type === 'checkout') {
+                showCheckoutStepFromHistory(overlay.step || 1);
+                checkoutHistoryDepth = Math.max(1, Number(overlay.step) || 1);
+            } else if (overlay && overlay.type === 'cart') {
+                const modal = document.getElementById('checkout-modal');
+                if (modal) modal.classList.add('hidden');
+                checkoutHistoryDepth = 0;
+                originalToggleCart(true);
+            } else {
+                const modal = document.getElementById('checkout-modal');
+                if (modal) modal.classList.add('hidden');
+                originalToggleCart(false);
+                checkoutHistoryDepth = 0;
+            }
+        } finally {
+            handlingPopState = false;
+        }
+    });
 })();
 </script>
 
