@@ -3712,8 +3712,17 @@ body > .bg-gradient-to-r.from-amber-600 { min-height:34px; padding:7px 12px !imp
 body > .bg-gradient-to-r.from-amber-600 > div { justify-content:center !important; }
 body > .bg-gradient-to-r.from-amber-600 > div > span { display:flex; align-items:center; justify-content:center; flex-wrap:nowrap; gap:6px; white-space:normal; line-height:1.45; text-align:center; }
 @media (max-width:767px) {
-  /* Header: delivery remains beside the logo; login keeps its original utility position. */
-  header > .max-w-7xl > div:first-child { flex:0 0 auto !important; width:auto !important; max-width:100%; justify-content:flex-start !important; }
+  /* Mobile only: keep the logo at the right edge and move the delivery control to the far left. */
+  header > .max-w-7xl > div:first-child {
+    flex:1 1 100% !important;
+    width:100% !important;
+    max-width:100%;
+    min-width:0;
+    margin:0 !important;
+    justify-content:space-between !important;
+    align-items:center !important;
+    gap:8px !important;
+  }
   header .souq-brand-name { white-space:nowrap; }
   header .souq-brand-name .text-2xl { font-size:clamp(15px,4.4vw,18px) !important; }
   header .souq-location-control { max-width:min(43vw,158px) !important; }
