@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SouqElite | أمازون النخبة - المنصة التفاعلية المتكاملة</title>
+    <title>RexaStore | المتجر الإلكتروني</title>
     <!-- FontAwesome Icons -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <!-- Google Fonts: Cairo -->
@@ -475,17 +475,13 @@
     <div id="toast-container" class="fixed bottom-5 left-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
 
     <!-- Top Announcement Bar -->
-    <div class="bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 text-white text-xs font-bold py-1.5 px-4 text-center flex items-center justify-between shadow-inner">
+    <div id="rexastore-offer-strip" class="bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 text-white text-xs font-bold py-1.5 px-4 text-center flex items-center justify-between shadow-inner">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
             <span class="flex items-center gap-2">
                 <span class="animate-pulse bg-white text-orange-600 px-2 py-0.5 rounded-full text-[10px]">جديد</span>
                 استخدم كود <code class="bg-black/20 px-1.5 py-0.5 rounded font-mono border border-white/20">DISCOUNT10</code> للحصول على خصم 10% فوراً!
             </span>
-            <div class="flex items-center space-x-4 space-x-reverse text-[11px]">
-                <button data-onclick="openSellerModal()" class="hover:underline flex items-center gap-1">
-                    <i class="fa-solid fa-store text-yellow-300"></i> منصة البائعين (إضافة منتج)
-                </button>
-            </div>
+
         </div>
     </div>
 
@@ -497,7 +493,7 @@
             <div class="flex items-center space-x-3 space-x-reverse">
                 <a href="#" class="souq-brand-name flex items-center space-x-1.5 space-x-reverse px-2 py-1 rounded border border-transparent hover:border-white transition">
                     <span class="text-2xl font-black tracking-tight text-white flex items-center">
-                        <span class="text-orange-400">Souq</span>Elite
+                        <span class="rexa-wordmark">Rexa</span><span class="rexa-wordmark-store">Store</span>
                         <span class="text-[10px] mr-1 px-1.5 py-0.5 bg-orange-500 text-black font-black rounded">PRO</span>
                     </span>
                 </a>
@@ -582,7 +578,7 @@
                 <a href="#deals" data-onclick="filterByBadge('عروض')" class="hover:text-orange-300 transition">🔥 عروض اليوم</a>
                 <a href="#bestsellers" data-onclick="filterByBadge('الأكثر مبيعاً')" class="hover:text-orange-300 transition">⭐ الأكثر مبيعاً</a>
                 <a href="#prime" data-onclick="filterByPrime()" class="hover:text-orange-300 transition text-blue-400 font-bold">⚡ منتجات Prime</a>
-                <button data-onclick="openSellerModal()" class="hover:text-orange-300 transition text-yellow-300">🏪 ابدأ البيع معنا</button>
+                
                 <button data-onclick="openOrdersModal()" class="hover:text-orange-300 transition">📦 تتبع طلباتي</button>
                 <button data-onclick="openLocationModal()" class="md:hidden hover:text-orange-300 transition">📍 <span id="loc-mini">التوصيل</span></button>
             </div>
@@ -745,12 +741,16 @@
 
     </main>
 
-    <!-- Footer Section -->
-    <footer class="bg-amazon-dark text-white mt-16 border-t border-gray-800">
-        <button data-onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-full bg-[#374151] hover:bg-[#4b5563] text-white py-3 text-center text-xs font-bold transition">
-            العودة إلى أعلى الصفحة <i class="fa-solid fa-arrow-up mr-2"></i>
+    <!-- Standalone back-to-top button on the normal page background -->
+    <div class="rexastore-back-top-area">
+        <button type="button" data-onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="rexastore-back-to-top" aria-label="إلى الأعلى" title="إلى الأعلى">
+            <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
         </button>
+        <span class="rexastore-back-top-label">إلى الأعلى</span>
+    </div>
 
+    <!-- Footer Section -->
+    <footer class="bg-amazon-dark text-white mt-0 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8 text-xs">
             <div class="space-y-3">
                 <h4 class="font-bold text-sm text-orange-400">عرف المزيد عنا</h4>
@@ -786,7 +786,7 @@
         </div>
 
         <div class="bg-[#0f141c] py-4 text-center text-[11px] text-gray-400 border-t border-gray-800">
-            © 2026 SouqElite Pro. جميع الحقوق محفوظة - منصة أمازون النخبة والتسويق الرقمي.
+            © 2026 RexaStore. جميع الحقوق محفوظة.
         </div>
     </footer>
 
@@ -2090,16 +2090,34 @@
             return `<div data-onclick="goCat('${c.id}')" class="catcard group" role="button" tabindex="0" aria-label="تصفح ${c.n}"><img src="${U(c.i)}" alt="${c.n}" loading="lazy" decoding="async"><span class="lbl">${c.n}</span></div>`;
         }
         function renderMoreCategories() {
+            if (souqVisibleCategories >= CATS.length) return;
             const cards = document.getElementById('cat-cards');
             const next = CATS.slice(souqVisibleCategories, souqVisibleCategories + 7);
             cards.insertAdjacentHTML('beforeend', next.map(categoryCardHTML).join(''));
             souqVisibleCategories += next.length;
             updateCategoryMoreButton();
         }
+        function renderFewerCategories() {
+            const firstPageSize = Math.min(7, CATS.length);
+            if (souqVisibleCategories <= firstPageSize) return;
+            souqVisibleCategories = Math.max(firstPageSize, souqVisibleCategories - 7);
+            const cards = document.getElementById('cat-cards');
+            cards.innerHTML = CATS.slice(0, souqVisibleCategories).map(categoryCardHTML).join('');
+            updateCategoryMoreButton();
+        }
         function updateCategoryMoreButton() {
             const holder = document.getElementById('cat-load-more');
-            const left = CATS.length - souqVisibleCategories;
-            holder.innerHTML = left > 0 ? `<button type="button" data-onclick="renderMoreCategories()" aria-label="عرض المزيد">عرض المزيد</button>` : '';
+            const shown = Math.min(souqVisibleCategories, CATS.length);
+            const left = CATS.length - shown;
+            const moreButton = left > 0
+                ? `<button type="button" class="categories-more-action" data-onclick="renderMoreCategories()" aria-label="عرض المزيد">عرض المزيد</button>`
+                : '';
+            const lessButton = shown > Math.min(7, CATS.length)
+                ? `<button type="button" class="categories-less-action" data-onclick="renderFewerCategories()" aria-label="عرض أقل">عرض أقل</button>`
+                : '';
+            // Keep the category controls consistent with the product catalog:
+            // More is available while hidden categories remain; Less appears after the first expansion.
+            holder.innerHTML = moreButton + lessButton;
         }
 
         function productCardHTML(p) {
@@ -2141,12 +2159,28 @@
             souqVisibleProducts += next.length;
             updateProductMoreButton();
         }
+        function renderFewerProducts() {
+            const firstPageSize = Math.min(9, souqFilteredProducts.length);
+            if (souqVisibleProducts <= firstPageSize) return;
+            souqVisibleProducts = Math.max(firstPageSize, souqVisibleProducts - 9);
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = souqFilteredProducts.slice(0, souqVisibleProducts).map(productCardHTML).join('');
+            updateProductMoreButton();
+        }
         function updateProductMoreButton() {
             const total = souqFilteredProducts.length;
             const shown = Math.min(souqVisibleProducts, total);
             document.getElementById('catalog-count').textContent = `${shown} من ${total}`;
             const left = total - shown;
-            document.getElementById('products-load-more').innerHTML = left > 0 ? `<button type="button" data-onclick="renderMoreProducts()" aria-label="عرض المزيد">عرض المزيد</button>` : '';
+            const moreButton = left > 0
+                ? `<button type="button" class="products-more-action" data-onclick="renderMoreProducts()" aria-label="عرض المزيد">عرض المزيد</button>`
+                : '';
+            const lessButton = shown > Math.min(9, total)
+                ? `<button type="button" class="products-less-action" data-onclick="renderFewerProducts()" aria-label="عرض أقل">عرض أقل</button>`
+                : '';
+            // More is available until the list is complete; Less appears after the first expansion.
+            // At the final page only Less remains, returning exactly one page on each click.
+            document.getElementById('products-load-more').innerHTML = moreButton + lessButton;
         }
 
         function applyFilters() {
@@ -2682,12 +2716,183 @@
         if (opening) panel.scrollIntoView({behavior:'smooth', block:'nearest'});
     };
 
-    function markHeaderAccents() {
+    function setupRexaProAnimation(logo, pro) {
+        // Treat Rexa + Store as one nine-character wordmark and animate
+        // each character, including both capital initials, independently.
+        const wordParts = Array.from(logo.querySelectorAll('.rexa-wordmark, .rexa-wordmark-store'));
+        if (!wordParts.length || !pro || pro.dataset.rexaProAnimationReady === 'true') return;
+
+        const letters = [];
+        let globalIndex = 0;
+
+        wordParts.forEach(part => {
+            // Rebuild every character slot from the original visible text on
+            // each fresh page load. This prevents any unwrapped first-letter
+            // text node (especially the capital R and S) from remaining
+            // outside the animation sequence.
+            const originalText = part.dataset.originalText || part.textContent || '';
+            if (!originalText) return;
+            part.dataset.originalText = originalText;
+            part.setAttribute('aria-label', originalText);
+
+            const fragment = document.createDocumentFragment();
+            Array.from(originalText).forEach(character => {
+                const letter = document.createElement('span');
+                letter.className = 'rexa-pro-letter';
+                letter.textContent = character;
+                letter.dataset.rexaCharacter = character;
+                letter.setAttribute('aria-hidden', 'true');
+                letter.style.setProperty('--letter-index', String(globalIndex));
+                letter.style.setProperty('visibility', 'visible', 'important');
+                globalIndex += 1;
+                letters.push(letter);
+                fragment.appendChild(letter);
+            });
+            // Remove the legacy word-level text paint. Once characters are
+            // wrapped individually, only the child letters may paint glyphs;
+            // a parent text-clipped gradient can otherwise leave a duplicate
+            // glyph layer visible when an individual letter is hidden.
+            part.style.setProperty('background', 'none', 'important');
+            part.style.setProperty('background-image', 'none', 'important');
+            part.style.setProperty('background-clip', 'border-box', 'important');
+            part.style.setProperty('-webkit-background-clip', 'border-box', 'important');
+            part.style.setProperty('animation', 'none', 'important');
+            part.style.setProperty('filter', 'none', 'important');
+            part.style.setProperty('text-shadow', 'none', 'important');
+
+            // replaceChildren guarantees the source text is not duplicated
+            // behind or beside the animated spans.
+            part.replaceChildren(fragment);
+        });
+
+        if (letters.length !== 9) {
+            // Keep the animation working if the brand text is later edited,
+            // while still animating every character found.
+            if (!letters.length) return;
+        }
+
+        logo.setAttribute('aria-label', wordParts.map(part => part.dataset.originalText || '').join(''));
+        pro.dataset.rexaProAnimationReady = 'true';
+        pro.setAttribute('aria-label', 'PRO');
+        pro.style.willChange = 'transform';
+
+        let isAnimating = false;
+        let resizeFrame = 0;
+
+        const getWordBounds = () => {
+            const rects = wordParts.map(part => part.getBoundingClientRect());
+            return {
+                left: Math.min(...rects.map(rect => rect.left)),
+                right: Math.max(...rects.map(rect => rect.right))
+            };
+        };
+
+        const updateTravelDistance = () => {
+            const wordBounds = getWordBounds();
+            const proRect = pro.getBoundingClientRect();
+            const proCenter = proRect.left + proRect.width / 2;
+            const wordCenter = (wordBounds.left + wordBounds.right) / 2;
+            const targetCenter = proCenter >= wordCenter
+                ? wordBounds.left - proRect.width * 0.18
+                : wordBounds.right + proRect.width * 0.18;
+            pro.style.setProperty('--rexa-pro-shift', `${targetCenter - proCenter}px`);
+        };
+
+        const setLetterHidden = (letter, hidden) => {
+            // A per-letter token prevents an older delayed hide from hiding a
+            // character again after the reveal sequence has already started.
+            const token = Number(letter.dataset.rexaVisibilityToken || 0) + 1;
+            letter.dataset.rexaVisibilityToken = String(token);
+
+            if (hidden) {
+                letter.classList.add('rexa-pro-letter-hidden');
+                // First fade/contract the glyph. Then apply visibility:hidden
+                // as a hard fallback, so uppercase R and S are removed just
+                // like every lowercase character in all browsers.
+                letter.style.setProperty('visibility', 'visible', 'important');
+                letter.style.setProperty('opacity', '0', 'important');
+                letter.style.setProperty('transform', 'translate3d(-.10em,-.025em,0) scale(.12)', 'important');
+                letter.style.setProperty('filter', 'blur(2.5px)', 'important');
+                window.setTimeout(() => {
+                    if (letter.dataset.rexaVisibilityToken === String(token) && letter.classList.contains('rexa-pro-letter-hidden')) {
+                        letter.style.setProperty('visibility', 'hidden', 'important');
+                    }
+                }, 460);
+            } else {
+                // Make the character visible before restoring its opacity,
+                // so the entrance transition is smooth rather than popping.
+                letter.style.setProperty('visibility', 'visible', 'important');
+                letter.classList.remove('rexa-pro-letter-hidden');
+                letter.style.removeProperty('opacity');
+                letter.style.removeProperty('transform');
+                letter.style.removeProperty('filter');
+            }
+        };
+
+        const playAnimation = () => {
+            if (isAnimating || document.hidden) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            isAnimating = true;
+            updateTravelDistance();
+            pro.classList.remove('rexa-pro-moving');
+            letters.forEach(letter => setLetterHidden(letter, false));
+            void pro.offsetWidth;
+            pro.classList.add('rexa-pro-moving');
+
+            // Hide every character, including BOTH capital initials, from right to left.
+            const hideOrder = [...letters].reverse();
+            hideOrder.forEach((letter, index) => {
+                window.setTimeout(() => setLetterHidden(letter, true), index * 125);
+            });
+
+            // Start PRO's return and the wordmark reveal at the SAME moment.
+            // Characters appear from left to right while PRO is travelling
+            // home, instead of waiting until its return transition has ended.
+            // This keeps both capital initials (R and S) synchronized with
+            // the same reveal sequence as every other character.
+            const inwardTravelDuration = 1850;
+            const returnTravelDuration = 1750;
+            window.setTimeout(() => {
+                // Removing this class starts PRO's 1.7s return transition.
+                pro.classList.remove('rexa-pro-moving');
+
+                // Begin revealing the letters immediately, during that motion.
+                letters.forEach((letter, index) => {
+                    window.setTimeout(() => setLetterHidden(letter, false), index * 125);
+                });
+
+                // Keep the animation guarded until both the return movement
+                // and the staggered letter reveal have had time to complete.
+                const revealDuration = Math.max(returnTravelDuration, (letters.length - 1) * 125 + 500);
+                window.setTimeout(() => { isAnimating = false; }, revealDuration);
+            }, inwardTravelDuration);
+        };
+
+        updateTravelDistance();
+        window.addEventListener('resize', () => {
+            if (resizeFrame) cancelAnimationFrame(resizeFrame);
+            resizeFrame = requestAnimationFrame(() => {
+                resizeFrame = 0;
+                updateTravelDistance();
+            });
+        }, { passive: true });
+
+        // Repeat the full animation exactly every 10 seconds.
+        window.setInterval(playAnimation, 10000);
+    }
+
+        function markHeaderAccents() {
         const logo = document.querySelector('header .max-w-7xl > .flex:first-child a > span');
         if (logo) {
             logo.classList.add('souq-brand-name');
-            const pro = logo.querySelector('.text-\\[10px\\]');
-            if (pro) pro.classList.add('souq-brand-pro');
+            const pro = Array.from(logo.querySelectorAll('span')).find(el =>
+                el.classList.contains('text-[10px]') && el.textContent.trim().toUpperCase() === 'PRO'
+            );
+            if (pro) {
+                pro.classList.add('souq-brand-pro');
+                setupRexaProAnimation(logo, pro);
+            }
         }
         document.querySelectorAll('header button[data-onclick="openLocationModal()"]').forEach(location => location.classList.add('souq-location-control'));
         const heart = document.querySelector('header button[data-onclick="openWishlistDrawer()"]');
@@ -3492,6 +3697,437 @@
     });
 })();
 </script>
+
+
+<style id="rexastore-final-mobile-refinements">
+/* RexaStore wordmark: distinctive two-tone identity */
+.souq-brand-name { display:inline-flex !important; align-items:center; text-decoration:none !important; }
+.souq-brand-name .rexa-wordmark { color:#20c9b7 !important; font-weight:1000; letter-spacing:-.075em; text-shadow:0 2px 12px rgba(32,201,183,.22); }
+.souq-brand-name .rexa-wordmark-store { color:#8b75f5 !important; font-weight:1000; letter-spacing:-.075em; text-shadow:0 2px 12px rgba(139,117,245,.2); }
+.dark .souq-brand-name .rexa-wordmark { color:#35e0c9 !important; }
+.dark .souq-brand-name .rexa-wordmark-store { color:#ad9aff !important; }
+/* Offer strip stays a single tidy line instead of stacking each phrase. */
+#toast-container ~ .bg-gradient-to-r.from-amber-600,
+body > .bg-gradient-to-r.from-amber-600 { min-height:34px; padding:7px 12px !important; }
+body > .bg-gradient-to-r.from-amber-600 > div { justify-content:center !important; }
+body > .bg-gradient-to-r.from-amber-600 > div > span { display:flex; align-items:center; justify-content:center; flex-wrap:nowrap; gap:6px; white-space:normal; line-height:1.45; text-align:center; }
+@media (max-width:767px) {
+  /* Header: delivery remains beside the logo; login keeps its original utility position. */
+  header > .max-w-7xl > div:first-child { flex:0 0 auto !important; width:auto !important; max-width:100%; justify-content:flex-start !important; }
+  header .souq-brand-name { white-space:nowrap; }
+  header .souq-brand-name .text-2xl { font-size:clamp(15px,4.4vw,18px) !important; }
+  header .souq-location-control { max-width:min(43vw,158px) !important; }
+  header .souq-location-control #current-location-text { max-width:calc(43vw - 34px) !important; }
+  header > .max-w-7xl { flex-wrap:wrap !important; }
+  body > .bg-gradient-to-r.from-amber-600 > div > span { font-size:10px !important; gap:4px; }
+  body > .bg-gradient-to-r.from-amber-600 code { font-size:9px !important; }
+  /* Smaller, more breathable product cards and page gutters. */
+  main.flex-1.max-w-7xl { padding-left:10px !important; padding-right:10px !important; padding-top:15px !important; gap:22px !important; }
+  #products-grid { gap:9px !important; }
+  #products-grid > div { min-width:0 !important; border-radius:10px !important; }
+  #products-grid > div .h-44 { height:clamp(104px,31vw,132px) !important; }
+  #products-grid > div img { max-height:100% !important; object-fit:contain !important; }
+  #products-grid > div .text-lg, #products-grid > div .text-xl { font-size:13px !important; }
+  #products-grid > div .text-sm { font-size:10px !important; }
+  #products-grid > div button { font-size:10px !important; padding:6px 7px !important; }
+  .products-scroll-box { max-height:68vh !important; padding:7px !important; border-radius:12px !important; }
+  /* Let a swipe continue from the end of the product pane to the page/footer. */
+  .products-scroll-box { overscroll-behavior-y:auto !important; touch-action:pan-y !important; }
+  .products-scroll-box #products-grid { overscroll-behavior: auto !important; }
+  .products-scroll-box #products-load-more { position:relative !important; bottom:auto !important; }
+}
+/* Remove seller-platform surfaces and navigation remnants completely. */
+.seller-platform-entry, [data-seller-platform], #seller-platform-section { display:none !important; }
+</style>
+<script id="rexastore-remove-seller-entrypoints-and-mobile-scroll-chain">
+(function(){
+  'use strict';
+  function cleanupSellerEntries(){
+    document.querySelectorAll('[data-onclick="openSellerModal()"], [onclick*="openSellerModal"]').forEach(function(el){ el.remove(); });
+    document.querySelectorAll('a,button').forEach(function(el){
+      var t=(el.textContent||'').replace(/\s+/g,' ').trim();
+      if(/منصة البائعين|ابدأ البيع معنا|إضافة منتج للبائعين/.test(t)) el.remove();
+    });
+    document.querySelectorAll('[id*="seller-modal"],[id*="seller-platform"]').forEach(function(el){el.remove();});
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',cleanupSellerEntries,{once:true}); else cleanupSellerEntries();
+  // Keep nested product scrolling native; at either edge the browser can continue scrolling the page.
+  function enableScrollChaining(){
+    document.querySelectorAll('.products-scroll-box').forEach(function(box){
+      box.style.overscrollBehaviorY='auto';
+      box.style.webkitOverflowScrolling='touch';
+      box.style.touchAction='pan-y';
+    });
+  }
+  enableScrollChaining();
+  document.addEventListener('DOMContentLoaded',enableScrollChaining,{once:true});
+})();
+</script>
+
+
+
+<style id="rexastore-premium-animated-customization">
+/* ===== Animated multicolour offer strip: gold, purple, blue, mauve and green ===== */
+#rexastore-offer-strip {
+    position:relative !important;
+    isolation:isolate;
+    overflow:hidden !important;
+    min-height:38px;
+    padding:7px 12px !important;
+    color:#fff !important;
+    background:linear-gradient(110deg,#d69e18 0%,#f5cf63 13%,#7839c7 31%,#2767d8 48%,#c05bd6 65%,#159b67 82%,#d69e18 100%) !important;
+    background-size:320% 320% !important;
+    animation:rexaOfferGradientFlow 11s ease-in-out infinite;
+    box-shadow:0 3px 18px rgba(89,62,170,.25), inset 0 1px 0 rgba(255,255,255,.28) !important;
+}
+#rexastore-offer-strip::before {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    top:-80%; bottom:-80%; left:-35%; width:24%;
+    transform:rotate(18deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);
+    animation:rexaOfferShimmer 5.5s ease-in-out infinite;
+    pointer-events:none;
+}
+#rexastore-offer-strip > div { justify-content:center !important; position:relative; z-index:1; }
+#rexastore-offer-strip > div > span {
+    display:flex !important; align-items:center; justify-content:center;
+    flex-wrap:wrap; gap:7px; line-height:1.5;
+    color:#fff !important; text-shadow:0 1px 4px rgba(20,12,40,.48);
+}
+#rexastore-offer-strip > div > span > span:first-child {
+    color:#38234c !important; background:linear-gradient(135deg,#fff7d6,#f5d36d) !important;
+    box-shadow:0 1px 7px rgba(40,20,70,.24);
+    text-shadow:none !important;
+}
+#rexastore-offer-strip code {
+    color:#fff !important; background:rgba(22,18,43,.36) !important;
+    border:1px solid rgba(255,255,255,.48) !important;
+    text-shadow:0 1px 3px rgba(0,0,0,.35);
+}
+@keyframes rexaOfferGradientFlow {
+    0%,100% { background-position:0% 50%; }
+    50% { background-position:100% 50%; }
+}
+@keyframes rexaOfferShimmer {
+    0%,12% { left:-35%; opacity:0; }
+    28% { opacity:.9; }
+    58%,100% { left:125%; opacity:0; }
+}
+
+/* ===== RexaStore wordmark: true left-to-right order with animated luminous spectrum ===== */
+.souq-brand-name {
+    direction:ltr !important;
+    unicode-bidi:isolate !important;
+}
+.souq-brand-name > span.text-2xl {
+    direction:ltr !important;
+    display:inline-flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    white-space:nowrap !important;
+}
+.souq-brand-name .rexa-wordmark,
+.souq-brand-name .rexa-wordmark-store {
+    display:inline-block !important;
+    color:transparent !important;
+    -webkit-text-fill-color:transparent !important;
+    background:linear-gradient(100deg,#f6c453 0%,#a855f7 23%,#3b82f6 44%,#db5adf 62%,#22c579 80%,#f6c453 100%);
+    background-size:300% 100%;
+    background-clip:text;
+    -webkit-background-clip:text;
+    animation:rexaWordmarkGlow 6s linear infinite;
+    letter-spacing:-.065em !important;
+    text-shadow:none !important;
+    filter:drop-shadow(0 1px 5px rgba(168,85,247,.25));
+}
+.souq-brand-name .rexa-wordmark-store { animation-delay:-2.7s; }
+@keyframes rexaWordmarkGlow {
+    0% { background-position:0% 50%; filter:drop-shadow(0 1px 4px rgba(246,196,83,.32)); }
+    50% { background-position:150% 50%; filter:drop-shadow(0 1px 9px rgba(59,130,246,.38)); }
+    100% { background-position:300% 50%; filter:drop-shadow(0 1px 4px rgba(34,197,121,.3)); }
+}
+
+/* ===== Category expansion / collapse controls ===== */
+#cat-load-more {
+    display:flex !important;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-start !important;
+    gap:8px 18px !important;
+    text-align:right !important;
+}
+#cat-load-more .categories-more-action,
+#cat-load-more .categories-less-action {
+    display:inline-flex !important;
+    align-items:center;
+    justify-content:center;
+    width:auto !important;
+    min-height:34px !important;
+    padding:4px 2px !important;
+    margin:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    font-family:inherit;
+    font-size:14px !important;
+    font-weight:800 !important;
+    line-height:1.5 !important;
+    text-decoration:none;
+    cursor:pointer;
+    transition:color .2s ease, transform .2s ease;
+}
+#cat-load-more .categories-more-action { color:#2563eb !important; }
+#cat-load-more .categories-less-action { color:#8b5cf6 !important; }
+#cat-load-more .categories-more-action:hover,
+#cat-load-more .categories-less-action:hover { text-decoration:underline; transform:translateY(-1px); }
+.dark #cat-load-more .categories-more-action { color:#60a5fa !important; }
+.dark #cat-load-more .categories-less-action { color:#c4b5fd !important; }
+
+/* ===== Product expansion / collapse controls ===== */
+#products-load-more {
+    display:flex !important;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:flex-start !important;
+    gap:8px 18px !important;
+    text-align:right !important;
+}
+#products-load-more .products-more-action,
+#products-load-more .products-less-action {
+    display:inline-flex !important;
+    align-items:center;
+    justify-content:center;
+    width:auto !important;
+    min-height:34px !important;
+    padding:4px 2px !important;
+    margin:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    box-shadow:none !important;
+    font-family:inherit;
+    font-size:14px !important;
+    font-weight:800 !important;
+    line-height:1.5 !important;
+    text-decoration:none;
+    cursor:pointer;
+    transition:color .2s ease, transform .2s ease;
+}
+#products-load-more .products-more-action { color:#2563eb !important; }
+#products-load-more .products-less-action { color:#8b5cf6 !important; }
+#products-load-more .products-more-action:hover,
+#products-load-more .products-less-action:hover { text-decoration:underline; transform:translateY(-1px); }
+.dark #products-load-more .products-more-action { color:#60a5fa !important; }
+.dark #products-load-more .products-less-action { color:#c4b5fd !important; }
+
+/* ===== Footer section headings use distinct coordinated colours ===== */
+footer .max-w-7xl.grid > div:nth-child(1) > h4 { color:#42d6c2 !important; }
+footer .max-w-7xl.grid > div:nth-child(2) > h4 { color:#f3c45c !important; }
+footer .max-w-7xl.grid > div:nth-child(3) > h4 { color:#8db8ff !important; }
+footer .max-w-7xl.grid > div:nth-child(4) > h4 { color:#d7a0f5 !important; }
+footer .max-w-7xl.grid > div:nth-child(1) > h4,
+footer .max-w-7xl.grid > div:nth-child(2) > h4,
+footer .max-w-7xl.grid > div:nth-child(3) > h4,
+footer .max-w-7xl.grid > div:nth-child(4) > h4 {
+    text-shadow:0 1px 10px currentColor;
+    letter-spacing:.01em;
+}
+
+/* ===== Standalone bouncing circular back-to-top button ===== */
+.rexastore-back-top-area {
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px 16px 25px;
+    background:transparent !important; /* show the page's normal white background */
+    border:0 !important;
+    box-shadow:none !important;
+    gap:12px;
+}
+.rexastore-back-top-label {
+    display:inline-block;
+    color:#292929;
+    background:transparent !important;
+    border:0 !important;
+    box-shadow:none !important;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.4;
+    white-space:nowrap;
+    cursor:default;
+}
+.rexastore-back-to-top {
+    position:relative;
+    isolation:isolate;
+    width:52px !important;
+    height:52px !important;
+    min-width:52px !important;
+    min-height:52px !important;
+    padding:0 !important;
+    margin:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    border:1px solid rgba(255,255,255,.72) !important;
+    border-radius:50% !important;
+    color:#fff !important;
+    background:linear-gradient(145deg,#25cdb6 0%,#4678ef 56%,#8661e9 100%) !important;
+    box-shadow:0 5px 13px rgba(0,0,0,.18),0 5px 17px rgba(67,120,239,.20),inset 0 1px 3px rgba(255,255,255,.42) !important;
+    cursor:pointer;
+    font-family:inherit;
+    line-height:1 !important;
+    animation:rexaCircleBounce 1.25s ease-in-out infinite;
+    transition:filter .2s ease, box-shadow .2s ease;
+}
+.rexastore-back-to-top:hover {
+    filter:brightness(1.08);
+    box-shadow:0 7px 16px rgba(0,0,0,.20),0 7px 20px rgba(67,120,239,.26),inset 0 1px 3px rgba(255,255,255,.45) !important;
+}
+.rexastore-back-to-top i {
+    display:block;
+    font-size:19px;
+    color:#fff !important;
+    pointer-events:none;
+}
+/* Soft oval under the circle, contracting while the button is airborne. */
+.rexastore-back-to-top::after {
+    content:"";
+    position:absolute;
+    z-index:-1;
+    left:50%;
+    bottom:-13px;
+    width:25px;
+    height:7px;
+    border-radius:50%;
+    background:rgba(15,23,42,.22);
+    filter:blur(2px);
+    transform:translateX(-50%) scale(1);
+    animation:rexaFloorShadow 1.25s ease-in-out infinite;
+    pointer-events:none;
+}
+@keyframes rexaCircleBounce {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-6px); }
+}
+@keyframes rexaFloorShadow {
+    0%,100% { opacity:.30; transform:translateX(-50%) scale(1); }
+    50% { opacity:.10; transform:translateX(-50%) scale(.62); }
+}
+@media (max-width:767px) {
+    #rexastore-offer-strip { min-height:36px; padding:6px 8px !important; }
+    #rexastore-offer-strip > div > span { font-size:10px !important; gap:4px; }
+    #rexastore-offer-strip code { font-size:9px !important; }
+    .souq-brand-name > span.text-2xl { font-size:clamp(15px,4.4vw,18px) !important; }
+    #products-load-more { gap:8px 15px !important; }
+    #products-load-more .products-more-action,
+    #products-load-more .products-less-action { min-height:32px !important; font-size:13px !important; }
+    #cat-load-more .categories-more-action,
+    #cat-load-more .categories-less-action { min-height:32px !important; font-size:13px !important; }
+    .rexastore-back-top-area { padding:17px 12px 23px; }
+    .rexastore-back-to-top { width:46px !important; height:46px !important; min-width:46px !important; min-height:46px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #rexastore-offer-strip, #rexastore-offer-strip::before,
+    .souq-brand-name .rexa-wordmark, .souq-brand-name .rexa-wordmark-store,
+    .rexastore-back-to-top,
+    .rexastore-back-to-top::after { animation:none !important; }
+    .rexastore-back-to-top::after { opacity:.22; transform:translateX(-50%) scale(1); }
+}
+</style>
+
+
+<style id="rexastore-pro-wordmark-animation-correction">
+/*
+ * Each letter is wrapped in its own .rexa-pro-letter span by JavaScript.
+ * The earlier word-level gradient/background-clip animation must therefore
+ * be disabled on these two parent spans. Otherwise the parent's text-clipped
+ * background/filter can paint a second copy of glyphs (notably the capital
+ * initials) underneath the individually animated letters.
+ */
+.souq-brand-name .rexa-wordmark,
+.souq-brand-name .rexa-wordmark-store {
+    display:inline-block !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    background:none !important;
+    background-image:none !important;
+    background-color:transparent !important;
+    background-clip:border-box !important;
+    -webkit-background-clip:border-box !important;
+    animation:none !important;
+    filter:none !important;
+    text-shadow:none !important;
+    -webkit-text-fill-color:transparent !important;
+    color:transparent !important;
+}
+.souq-brand-name .rexa-pro-letter {
+    display:inline-block;
+    position:relative;
+    opacity:1;
+    transform:translate3d(0,0,0) scale(1);
+    transform-origin:center;
+    transition:
+        opacity .36s ease,
+        transform .42s cubic-bezier(.2,.75,.25,1),
+        filter .36s ease;
+    color:transparent !important;
+    -webkit-text-fill-color:transparent !important;
+    background-image:linear-gradient(112deg,
+        #ffd166 0%, #ff4d9d 16%, #b45cff 32%, #5865ff 48%,
+        #21c9ff 64%, #25e0a2 80%, #ffd166 100%);
+    background-size:260% 100%;
+    background-position:0% 50%;
+    background-clip:text;
+    -webkit-background-clip:text;
+    animation:rexaLivingColorFlow 4.6s linear infinite;
+    animation-delay:calc(var(--letter-index, 0) * -0.17s);
+    filter:drop-shadow(0 0 3px rgba(112,91,255,.38));
+    will-change:background-position, opacity, transform;
+}
+.souq-brand-name .rexa-pro-letter.rexa-pro-letter-hidden {
+    opacity:0 !important;
+    -webkit-text-fill-color:transparent !important;
+    color:transparent !important;
+    text-shadow:none !important;
+    transform:translate3d(-.10em,-.025em,0) scale(.12) !important;
+    filter:blur(2.5px) !important;
+}
+@keyframes rexaLivingColorFlow {
+    0% { background-position:0% 50%; }
+    100% { background-position:260% 50%; }
+}
+.souq-brand-name .souq-brand-pro {
+    position:relative;
+    z-index:8;
+    transform:translate3d(0,0,0) scale(1);
+    transform-origin:center;
+    transition:transform 1.7s cubic-bezier(.2,.78,.22,1), filter .35s ease, box-shadow .35s ease;
+    will-change:transform;
+}
+.souq-brand-name .souq-brand-pro.rexa-pro-moving {
+    transform:translate3d(var(--rexa-pro-shift,0px),-1px,0) scale(1.14) !important;
+    filter:brightness(1.2) drop-shadow(0 0 8px rgba(167,139,250,.95));
+    animation:rexaProBadgePulse 1.7s ease-in-out both;
+}
+@keyframes rexaProBadgePulse {
+    0%,100% { box-shadow:0 0 0 0 rgba(139,92,246,0); }
+    45%,60% { box-shadow:0 0 12px 3px rgba(139,92,246,.55); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .souq-brand-name .rexa-pro-letter,
+    .souq-brand-name .souq-brand-pro {
+        animation:none !important;
+        transition:none !important;
+        filter:none !important;
+        transform:none !important;
+        opacity:1 !important;
+    }
+}
+</style>
 
 </body>
 </html>
